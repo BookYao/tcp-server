@@ -1,4 +1,4 @@
-package tcp_server
+package main
 
 import (
 	"fmt"
@@ -10,9 +10,10 @@ import (
 func main() {
 	fmt.Println("TCP Server Start...")
 	if len(os.Args) != 2 {
-		fmt.Printf("Usage: %s Port", os.Args[0])
+		fmt.Printf("Usage: %s Port\n", os.Args[0])
 		os.Exit(0)
 	}
+
 
 	service := ":7090"
 	tcpAddr, err := net.ResolveTCPAddr("tcp", service)
