@@ -13,19 +13,17 @@ const (
 )
 
 const (
-	MSG_PING 				= 1
+	MSG_PING                = 1
 	MSG_SET_LINKAGE_WATCHER = 330
 )
 
-
-
-type MSGHead struct  {
-	Length int
-	TermID int
+type MSGHead struct {
+	Length    int
+	TermID    int
 	CommendID int
-	Type int
-	Seqno int
-	Mark int
+	Type      int
+	Seqno     int
+	Mark      int
 }
 
 func handleConn(conn net.Conn) {
@@ -34,7 +32,7 @@ func handleConn(conn net.Conn) {
 	msgHeadBuf := make([]byte, MSG_HEAD_LENGHT)
 	for {
 		length, err := conn.Read(msgHeadBuf)
-		if err != nil  || length != MSG_HEAD_LENGHT {
+		if err != nil || length != MSG_HEAD_LENGHT {
 			fmt.Println("Read MSG MsgHead Failed.", err.Error())
 			continue
 		}
@@ -49,7 +47,7 @@ func handleConn(conn net.Conn) {
 }
 
 func saveLinkageWatcher(msg []byte) bool {
-	LINKAGE_WATCHER_FILE  := "/var/tmp/linkage.conf"
+	LINKAGE_WATCHER_FILE := "/var/tmp/linkage.conf"
 	fp, err := os.Open(LINKAGE_WATCHER_FILE)
 	if err != nil {
 		fmt.Println("Open Linkage Watcher File Failed.", err)
@@ -67,7 +65,7 @@ func saveLinkageWatcher(msg []byte) bool {
 }
 
 func MSGMsgHandle(conn net.Conn, MSGHead *MSGHead) bool {
-	var status bool =  true
+	var status bool = true
 	msgBodyLen := MSGHead.Length - MSG_HEAD_LENGHT
 	switch MSGHead.Type {
 	case MSG_PING:
@@ -85,7 +83,7 @@ func MSGMsgHandle(conn net.Conn, MSGHead *MSGHead) bool {
 	case MSG_SET_LINKAGE_WATCHER:
 		buf := make([]byte, msgBodyLen)
 		len, err := conn.Read(buf)
-		if err != nil  || len == 0 {
+		if err != nil || len == 0 {
 			fmt.Println("Set Linkage Watcher Read failed.", err)
 			status = false
 		}
