@@ -13,7 +13,7 @@ func main() {
 	}
 
 	serverAddr := os.Args[1] + ":" + os.Args[2]
-
+	fmt.Println("serverAddr:", serverAddr)
 	conn, err := net.Dial("tcp", serverAddr)
 	if err != nil {
 		fmt.Println("TCP Connect Failed!")

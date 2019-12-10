@@ -34,15 +34,20 @@ func handleConn(conn net.Conn) {
 		length, err := conn.Read(msgHeadBuf)
 		if err != nil || length != MSG_HEAD_LENGHT {
 			fmt.Println("Read MSG MsgHead Failed.", err.Error())
-			continue
+			return
 		}
 
+		fmt.Println("Read Msg length:", length)
 		MSGHead := MSGHead{}
 		bytesBuf := bytes.NewBuffer(msgHeadBuf)
 		binary.Read(bytesBuf, binary.LittleEndian, &MSGHead)
 		fmt.Printf("THis MSG Msg Total Length: %d\n", MSGHead.Length)
 
-		MSGMsgHandle(conn, &MSGHead)
+		status := MSGMsgHandle(conn, &MSGHead)
+		if status != true {
+			fmt.Println("MSG Header Handle Failed.")
+			return
+		}
 	}
 }
 
